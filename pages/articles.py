@@ -11,11 +11,11 @@ st.set_page_config(page_title="Streamlit App", page_icon="🧊", layout="wide")
 
 mypath = "exports"
 
-onlyfiles = [f.replace(".json", '') for f in listdir(mypath) if isfile(join(mypath, f))]
+list_files = [f.replace(".json", '') for f in listdir(mypath)]
 
 st.title("Articles")
 
-file = st.selectbox("Select a file", onlyfiles)
+file = st.selectbox("Select a file", list_files)
 
 if file:
     df = pd.read_json("exports/%s.json" % file)
@@ -33,4 +33,5 @@ if df is not None:
                     <p style="font-size: 10px;">%s</p>
                 </div>
             </div>
+        </div>
         """ % ( row["link_article"], row["img"], row["name_article"], row["category"], row["datetime"][0]), unsafe_allow_html=True)
