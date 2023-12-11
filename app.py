@@ -5,8 +5,6 @@ import pandas as pd
 st.set_page_config(page_title="Streamlit", page_icon="🔫", layout="wide")
 
 st.title("BDM Scrapping")
-st.sidebar.title("Menu")
-
 df = None
 is_extracted = False
 
