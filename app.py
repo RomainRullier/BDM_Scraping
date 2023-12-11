@@ -1,4 +1,5 @@
 import streamlit as st
+from scrapping.ScrapBM import GetArticlesBySearchBM
 
 st.set_page_config(page_title="Streamlit", page_icon="🔫", layout="wide")
 
