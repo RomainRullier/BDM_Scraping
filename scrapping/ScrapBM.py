@@ -48,6 +48,6 @@ class GetArticlesBySearchBM:
             json.dump(data, file)
 
 
-scrap_bm = GetArticlesBySearchBM('ia', 10)
-exported_data = scrap_bm.get_articles_by_pages()
-scrap_bm.saves_articles_to_json(exported_data)
+# scrap_bm = GetArticlesBySearchBM('ia', 10)
+# exported_data = scrap_bm.get_articles_by_pages()
+# scrap_bm.saves_articles_to_json(exported_data)
