@@ -28,7 +28,7 @@ if is_extracted:
     st.download_button(
         label="Download data",
         data=df.to_csv().encode('utf-8'),
-        file_name='export_article.csv',
+        file_name=search + 'export_article.csv',
         mime='text/csv'
     )
 
