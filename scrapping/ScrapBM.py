@@ -26,6 +26,7 @@ class GetArticlesBySearchBM:
                 'name_article': article.find('h3').text if article.find('h3') else '',
                 'description' : article.find('div', {'class': 'entry-excerpt'}).text if article.find('div', {'class': 'entry-excerpt'}) else '',
                 'key': article.get('id'),
+                'link_article': article.find('a').get('href') if article.find('a') else article.parent.get('href'),
             } for article in articles
         ]
 
