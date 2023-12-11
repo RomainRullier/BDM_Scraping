@@ -30,7 +30,7 @@ class GetArticlesBySearchBM:
         ]
 
     def get_articles_by_pages(self):
-        data = {}
+        data = []
         while self.actual_page < int(self.max_pages):
             self.actual_page += 1
             if (self.actual_page == 1):
@@ -39,8 +39,7 @@ class GetArticlesBySearchBM:
                 actual_url = 'https://www.blogdumoderateur.com/page/%s/?s=%s' % (self.actual_page, self.string_search)
             actual_response = requests.get(actual_url)
             articles = self.get_articles_by_content(actual_response.text)
-            data[self.actual_page] = articles
-
+            data += articles
         return data
 
     def saves_articles_to_json(self, data):
