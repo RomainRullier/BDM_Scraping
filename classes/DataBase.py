@@ -16,7 +16,6 @@ class DataBase():
     def create_table(self, name_table, columns):
         table = db.Table(name_table, self.metadata, *columns)
         table.create(self.engine)
-        print(f'Table {name_table} created')
 
     def read_table(self, name_table, return_keys=False):
         table = db.Table(name_table, self.metadata, autoload=True, autoload_with=self.engine)
@@ -32,7 +31,6 @@ class DataBase():
             values(kwarrgs)
         )
         self.connection.execute(stmt)
-        print(f'Row id added')
 
 
     def delete_row_byid(self, table, id):

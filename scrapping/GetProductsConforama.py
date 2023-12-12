@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -62,42 +64,52 @@ class GetProductsConforama():
         if not self.handless:
             self.accept_cookies()
 
-        self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, selector['price'])))
-        products = self.driver.find_elements(By.TAG_NAME, 'article')
+        time.sleep(2)
 
-        for x, article in enumerate(products):
-            curr_data = {}
-            curr_data['id_product'] = 'netatmo' + str(x)
-            try:
-                curr_data['seller'] = article.find_element(By.CLASS_NAME, selector['seller']).text
-            except:
-                curr_data['seller'] = 'Conforama'
-            try:
-                curr_data['rating'] = article.find_element(By.CLASS_NAME, selector['rating']).get_attribute('data')
-            except:
-                curr_data['rating'] = ''
-            try:
-                curr_data['name'] = article.find_element(By.CLASS_NAME, selector['name']).text
-            except:
-                curr_data['name'] = ''
-            try:
-                curr_data['link'] = article.find_element(By.TAG_NAME, 'a').get_attribute('href')
-            except:
-                curr_data['link'] = ''
-            try:
-                curr_data['image'] = article.find_element(By.CLASS_NAME, selector['image']).find_element(By.TAG_NAME, 'img').get_attribute('src')
-            except:
-                curr_data['image'] = ''
-            try:
-                curr_data['price'] = self.wait.until(EC.presence_of_element_located(By.CLASS_NAME, selector['price'])).text
-            except:
-                curr_data['price'] = ''
+        for page in range(0, 3):
 
-            data.append(curr_data)
+            self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, selector['price'])))
+            products = self.wait.until(EC.presence_of_all_elements_located((By.TAG_NAME, 'article')))
 
-            # insert data in database
-            self.db.add_row('products', curr_data)
 
+            for x, article in enumerate(products):
+
+                curr_data = {}
+                curr_data['id_product'] = '%s-%s-%s' % (searched_products, x, page)
+                try:
+                    curr_data['seller'] = article.find_element(By.CLASS_NAME, selector['seller']).text
+                except:
+                    curr_data['seller'] = 'Conforama'
+                try:
+                    curr_data['rating'] = article.find_element(By.CLASS_NAME, selector['rating']).get_attribute('data')
+                except:
+                    curr_data['rating'] = ''
+                try:
+                    curr_data['name'] = article.find_element(By.CLASS_NAME, selector['name']).text
+                except:
+                    curr_data['name'] = ''
+                try:
+                    curr_data['link'] = article.find_element(By.TAG_NAME, 'a').get_attribute('href')
+                except:
+                    curr_data['link'] = ''
+                try:
+                    curr_data['image'] = article.find_element(By.CLASS_NAME, selector['image']).find_element(By.TAG_NAME, 'img').get_attribute('src')
+                except:
+                    curr_data['image'] = ''
+                try:
+                    curr_data['price'] = self.wait.until(EC.presence_of_element_located(By.CLASS_NAME, selector['price'])).text
+                except:
+                    curr_data['price'] = ''
+
+                data.append(curr_data)
+                self.db.add_row('products', curr_data)
+
+            try:
+                parentClick = self.driver.find_element(By.CLASS_NAME, 'ctrl-next')
+                link = parentClick.find_element(By.TAG_NAME, 'a').get_attribute('href')
+                self.driver.get(link)
+            except:
+                break
         self.driver.quit()
         return data
 
