@@ -20,7 +20,7 @@ if btn_submit:
                 <img src="%s" style="width: 100px; height: 100px; border-radius: 10px;"/>
                 <div style="display: flex; flex-direction: column; margin-left: 10px;">
                     <h1 style="font-size: 12px;">%s</h1>
-                    <div style="display: flex; align-items: center; justify-content: evenly">
+                    <div style="display: flex; flex-direction: column; justify-content: evenly">
                         <p style="font-size: 10px;">%s</p>
                         <p style="font-size: 10px;">%s</p>
                         <p style="font-size: 10px;">%s</p>
