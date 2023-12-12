@@ -13,10 +13,6 @@ if btn_submit:
     cdiscount = GetProductsConforama(handless=True)
     data = cdiscount.get_products(search)
 
-    print(data)
-
-    # return data with seller, rating, price, image, link
-
     for product in data:
         st.markdown("""
         <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin: 10px 0;">

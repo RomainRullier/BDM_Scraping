@@ -10,11 +10,13 @@ class DataBase():
         self.table = self.engine.table_names()
 
 
-    def create_table(self, name_table, kwargs):
-        colums = [db.Column(k, v, primarykey = True) if 'id' in k else db.Column(k, v) for k,v in kwargs.items()]
-        db.Table(name_table, self.metadata, *colums)
-        self.metadata.create_all(self.engine)
-        print(f"Table : '{name_table}' are created succesfully")
+    def table_exists(self, name_table):
+        return name_table in self.table
+
+    def create_table(self, name_table, columns):
+        table = db.Table(name_table, self.metadata, *columns)
+        table.create(self.engine)
+        print(f'Table {name_table} created')
 
     def read_table(self, name_table, return_keys=False):
         table = db.Table(name_table, self.metadata, autoload=True, autoload_with=self.engine)

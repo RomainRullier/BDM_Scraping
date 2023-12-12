@@ -3,6 +3,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+from classes.DataBase import DataBase
+import sqlalchemy as db
 from dotenv import dotenv_values
 
 env = dotenv_values(".env")
@@ -22,6 +24,9 @@ class GetProductsConforama():
         self.handless = handless
         self.driver = self.init_webdriver()
         self.wait = WebDriverWait(self.driver, 5)
+        self.db = DataBase()
+
+        self.db.init('conforama-products')
 
     def accept_cookies(self):
         self.wait.until(EC.element_to_be_clickable((By.ID, selector['accept-cookies']))).click()
@@ -33,7 +38,23 @@ class GetProductsConforama():
         driver = webdriver.Chrome(options=options)
         return driver
 
+
     def get_products(self, searched_products):
+
+        # create table products if not exists
+        if not self.db.table_exists('products'):
+            columns = [
+                db.Column('id_product', db.String(50), primary_key=True),
+                db.Column('seller', db.String(50)),
+                db.Column('rating', db.String(50)),
+                db.Column('name', db.String(50)),
+                db.Column('link', db.String(50)),
+                db.Column('image', db.String(50)),
+                db.Column('price', db.String(50)),
+            ]
+            self.db.create_table('products', columns)
+
+
         url = "https://www.conforama.fr/recherche-conforama/%s?fromSearch=%s" % (searched_products, searched_products)
         self.driver.get(url)
         data = []
@@ -41,12 +62,12 @@ class GetProductsConforama():
         if not self.handless:
             self.accept_cookies()
 
-        self.wait.until(EC.presence_of_element_located((By.CLASS_NAME,  selector['price'])))
-
+        self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, selector['price'])))
         products = self.driver.find_elements(By.TAG_NAME, 'article')
 
-        for article in products:
+        for x, article in enumerate(products):
             curr_data = {}
+            curr_data['id_product'] = 'netatmo' + str(x)
             try:
                 curr_data['seller'] = article.find_element(By.CLASS_NAME, selector['seller']).text
             except:
@@ -68,16 +89,17 @@ class GetProductsConforama():
             except:
                 curr_data['image'] = ''
             try:
-                curr_data['price'] = article.find_element(By.CLASS_NAME, selector['price']).text
+                curr_data['price'] = self.wait.until(EC.presence_of_element_located(By.CLASS_NAME, selector['price'])).text
             except:
                 curr_data['price'] = ''
 
             data.append(curr_data)
 
-        self.close()
+            # insert data in database
+            self.db.add_row('products', curr_data)
+
+        self.driver.quit()
         return data
 
-    def close(self):
-        self.driver.close()
 
 
