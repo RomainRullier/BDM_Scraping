@@ -1,6 +1,7 @@
 import streamlit as st
 from scrapping.ScrapBM import GetArticlesBySearchBM
 import pandas as pd
+import time
 
 st.set_page_config(page_title="Streamlit", page_icon="🔫", layout="wide")
 
