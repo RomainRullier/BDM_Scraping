@@ -16,7 +16,7 @@ selector = {
     'rating' : 'stars',
     'name' : 'c-r_product_name',
     'image' : 'image-product',
-    'price' : 'wrapper-price-int',
+    'price' : 'wrapper-price_int',
 }
 
 class GetProductsConforama():
