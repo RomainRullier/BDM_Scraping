@@ -10,6 +10,26 @@ class DataBase():
         self.table = self.engine.table_names()
 
 
+    def get_all_products(self):
+        products = self.read_table('products')
+        stmt = db.select([products])
+        results = self.connection.execute(stmt).fetchall()
+        # encode json
+        list_products = []
+        for result in results:
+            list_products.append({
+                "id_product": result[0],
+                "seller": result[1],
+                "rating": result[2],
+                "name": result[3],
+                "link": result[4],
+                "image": result[5],
+                "price": result[6],
+            })
+        return list_products
+
+
+
     def table_exists(self, name_table):
         return name_table in self.table
 
