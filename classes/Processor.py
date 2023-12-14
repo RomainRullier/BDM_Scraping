@@ -88,7 +88,7 @@ class TextProcessor():
 
     def openai_code(self, msg):
 
-        return_gpt = openai.Completion.create(
+        return_gpt = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system",
