@@ -12,8 +12,10 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # Display chat messages from history on app rerun
-for message in st.session_state.messages:
-    print(message)
+for x, message in enumerate(st.session_state.messages):
+    validate = st.button("Validate", key=f"validate_{x}")
+    if validate:
+        processor.save_message(st.session_state.messages[x]["content"], message["content"])
     with st.chat_message(message["role"]):
         if message['type'] == 'text':
             st.markdown(message["content"])
@@ -40,6 +42,10 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         assistant_response = processor.prompt(prompt)
+        validate = st.button("Validate", key=f"validate_{len(st.session_state.messages)}")
+        if validate:
+            processor.save_message(prompt, assistant_response['content'])
+
         if assistant_response['type'] == 'text':
             message_placeholder.markdown(assistant_response['content'])
         elif assistant_response['type'] == 'image':

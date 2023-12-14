@@ -1,7 +1,7 @@
 import openai
 from bs4 import BeautifulSoup
 import requests
-
+import json
 
 class TextProcessor():
     def __init__(self, key):
@@ -180,3 +180,10 @@ class TextProcessor():
             'content' : return_gpt['choices'][0]['message']['content']
         }
 
+    def save_message(self, user_msg, gpt_msg):
+        data = {
+            'user_msg': user_msg,
+            'gpt_msg': gpt_msg
+        }
+        with open('data.json', 'a') as outfile:
+            json.dump(data, outfile)

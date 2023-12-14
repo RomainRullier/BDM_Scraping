@@ -4,3 +4,5 @@ pandas
 selenium==4.16.0
 sqlalchemy==1.4.0
 openai==0.28.0
+uvicorn
+fastapi
