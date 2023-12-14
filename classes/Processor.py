@@ -94,7 +94,7 @@ class TextProcessor():
                 {"role": "system",
                     "content": 'Ton ojectif est de vérifier la syntaxe d\'un code.'},
                 {"role": "user",
-                    "content": "Je veux vérifier le code suivant : %s" % msg},
+                    "content": "Je veux vérifier le code suivant : ```%s```" % msg},
             ],
             temperature=0.3,
             max_tokens=100
