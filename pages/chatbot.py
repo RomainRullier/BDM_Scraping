@@ -3,7 +3,7 @@ import random
 import time
 from classes.Processor import TextProcessor
 
-processor = TextProcessor(key=str(st.secrets["openai_key"])
+processor = TextProcessor(key=str(st.secrets["openai_key"]))
 
 st.title("Simple chat")
 
