@@ -18,7 +18,7 @@ for product in list_products:
                 <div style="display: flex; flex-direction: column; justify-content: evenly">
                     <p style="font-size: 10px;">%s</p>
                     <p style="font-size: 10px;">%s</p>
-                    <p style="font-size: 10px;">%s</p>
+                    <p style="font-size: 10px;">%s €</p>
                 </div>
             </div>
         </div>
