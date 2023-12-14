@@ -2,9 +2,14 @@ import streamlit as st
 import pandas as pd
 
 from os import listdir
+from classes.Processor import TextProcessor
 from os.path import isfile, join
 
 df = None
+
+chatgpt =  TextProcessor(key='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')
+
+chatgpt.prompt('/json https://www.20minutes.fr/')
 
 
 st.set_page_config(page_title="Streamlit App", page_icon="🧊", layout="wide")
