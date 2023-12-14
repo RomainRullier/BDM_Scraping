@@ -31,12 +31,12 @@ class TextProcessor():
                 text.replace('/generate', '').strip()
             )
         elif text.startswith('/actu'):
-            return self.openai_actu(
+            return self.summary_actu(
                 text.replace('/actu', '').strip()
             )
 
         elif text.startswith('/json'):
-            return self.openai_json(
+            return self.json_from_20_minutes(
                 text.replace('/json', '').strip()
             )
 
