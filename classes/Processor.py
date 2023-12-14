@@ -5,9 +5,11 @@ import requests
 
 class TextProcessor():
     def __init__(self, key):
-        self.api_key = key
+
+        openai.api_key = self.api_key
 
     def prompt(self, text):
+
         if text.startswith('/translate'):
             return self.openai_translate(
                 text.replace('/translate', '').strip()
@@ -48,7 +50,7 @@ class TextProcessor():
 
         return {
             'type': 'text',
-            'content' : return_gpt
+            'content' : return_gpt['choices'][0]['message']['content']
         }
 
     def openai_text_sumary(self, msg):
@@ -67,7 +69,7 @@ class TextProcessor():
 
         return {
             'type': 'text',
-            'content' : return_gpt
+            'content' : return_gpt['choices'][0]['message']['content']
         }
 
     def openai_text_generator(self, msg):
@@ -81,7 +83,7 @@ class TextProcessor():
 
         return {
             'type': 'text',
-            'content' : return_gpt
+            'content' : return_gpt['choices'][0]['message']['content']
         }
 
     def openai_code(self, msg):
@@ -95,7 +97,7 @@ class TextProcessor():
 
         return {
             'type': 'code',
-            'content' : return_gpt
+            'content' : return_gpt['choices'][0]['message']['content']
         }
 
 
@@ -110,5 +112,5 @@ class TextProcessor():
 
         return {
             'type': 'image',
-            'content': return_gpt
+            'content': response['data'][0]['url']
         }
