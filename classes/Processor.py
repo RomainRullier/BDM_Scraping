@@ -157,22 +157,24 @@ class TextProcessor():
 
         response = requests.get(msg).text
         soup = BeautifulSoup(response, "html.parser")
-        text = soup.text.replace("\n", " ").replace("\t", " ").replace(' ', '')
+
+        text = ''
+        for article in soup.find_all('article'):
+            text += article.prettify()
+
+            # get only img
 
         # ask openai to create a json
         return_gpt = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system",
-                 "content": 'Ton ojectif est de créer un json à partir d\'un texte.'},
+                 "content": 'Ton ojectif est de créer un json à partir d\'un texte. Tu dois retourner uniquement le json. Le json doit etre valide tu dois le parser pour être utiliser par python, dans le json je veux le titre, la catégorie, l"image et ce qui te semlbe interessant, je veux uniquement le json rien d"autres avec pas de voici le json par exemple'},
                 {"role": "user",
-                 "content": "Je veux créer un json à partir du texte suivant : %s" % text},
+                 "content": "Je veux créer un json à partir du texte suivant : %s" % text[:4000]},
             ],
             temperature=0.3,
-            max_tokens=100
         )
-
-        print(return_gpt['choices'][0]['message']['content'])
 
         return {
             'type': 'json',
