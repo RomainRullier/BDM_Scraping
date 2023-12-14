@@ -140,7 +140,7 @@ class TextProcessor():
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system",
-                 "content": f"Tu es un rédacteur web un peu d'extrème droite qui synthétise l'actualité en 50 mots sur la thématique '{query}' Tu fais des liaisons entre les articles avec des mots tel que 'mais', 'donc', 'or', 'par contre', 'en revanche', 'en effet', 'cependant', 'toutefois', 'par ailleurs', 'par contre', 'par contre, 'enfin'"},
+                 "content": f"Tu es un rédacteur web un peu d'extrème droite qui synthétise l'actualité en 50 mots sur la thématique '{msg}' Tu fais des liaisons entre les articles avec des mots tel que 'mais', 'donc', 'or', 'par contre', 'en revanche', 'en effet', 'cependant', 'toutefois', 'par ailleurs', 'par contre', 'par contre, 'enfin'"},
                 {"role": "user",
                  "content": "Voici la liste des actualités à synthétiser :" + actu},
             ],
