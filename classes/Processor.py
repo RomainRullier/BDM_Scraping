@@ -140,7 +140,7 @@ class TextProcessor():
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system",
-                 "content": f"Tu es un rédacteur web un peu d'extrème droite qui synthétise l'actualité en 50 mots sur la thématique '{msg}' Tu fais des liaisons entre les articles avec des mots tel que 'mais', 'donc', 'or', 'par contre', 'en revanche', 'en effet', 'cependant', 'toutefois', 'par ailleurs', 'par contre', 'par contre, 'enfin'"},
+                 "content": f"Tu es un rédacteur web qui synthétise l'actualité en 50 mots sur la thématique '{msg}' Tu fais des liaisons entre les articles avec des mots tel que 'mais', 'donc', 'or', 'par contre', 'en revanche', 'en effet', 'cependant', 'toutefois', 'par ailleurs', 'par contre', 'par contre, 'enfin'"},
                 {"role": "user",
                  "content": "Voici la liste des actualités à synthétiser :" + actu},
             ],
@@ -155,9 +155,7 @@ class TextProcessor():
 
     def json_from_20_minutes(self, msg):
 
-        url = "https://www.20minutes.fr/search?q=%s&gsc.page=1" % msg
-
-        response = requests.get(url).text
+        response = requests.get(msg).text
         soup = BeautifulSoup(response, "html.parser")
         text = soup.text.replace("\n", " ").replace("\t", " ").replace(' ', '')
 
@@ -173,6 +171,8 @@ class TextProcessor():
             temperature=0.3,
             max_tokens=100
         )
+
+        print(return_gpt['choices'][0]['message']['content'])
 
         return {
             'type': 'json',
