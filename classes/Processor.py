@@ -1,5 +1,5 @@
 import openai
-import bs4
+from bs4 import BeautifulSoup
 import requests
 
 
@@ -119,3 +119,54 @@ class TextProcessor():
             'type': 'image',
             'content': return_gpt['data'][0]['url']
         }
+
+    def summary_actu(self, msg):
+
+        text = requests.get(f'https://www.bing.com/news/search?q={msg}').text
+        soup = BeautifulSoup(text, 'html.parser')
+
+        actu = ' '.join(["- Actualité : " + link.text + ' \n' for link in soup.find_all('a', 'title')])
+
+        return_gpt = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system",
+                 "content": f"Tu es un rédacteur web un peu d'extrème droite qui synthétise l'actualité en 50 mots sur la thématique '{query}' Tu fais des liaisons entre les articles avec des mots tel que 'mais', 'donc', 'or', 'par contre', 'en revanche', 'en effet', 'cependant', 'toutefois', 'par ailleurs', 'par contre', 'par contre, 'enfin'"},
+                {"role": "user",
+                 "content": "Voici la liste des actualités à synthétiser :" + actu},
+            ],
+            max_tokens=100,
+            temperature=0.9,
+        )
+
+        return {
+            'type': 'text',
+            'content' : return_gpt['choices'][0]['message']['content']
+        }
+
+    def json_from_20_minutes(self, msg):
+
+        url = "https://www.20minutes.fr/search?q=%s&gsc.page=1" % msg
+
+        response = requests.get(url).text
+        soup = BeautifulSoup(response, "html.parser")
+        text = soup.text.replace("\n", " ").replace("\t", " ").replace(' ', '')
+
+        # ask openai to create a json
+        return_gpt = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system",
+                 "content": 'Ton ojectif est de créer un json à partir d\'un texte.'},
+                {"role": "user",
+                 "content": "Je veux créer un json à partir du texte suivant : %s" % text},
+            ],
+            temperature=0.3,
+            max_tokens=100
+        )
+
+        return {
+            'type': 'json',
+            'content' : return_gpt['choices'][0]['message']['content']
+        }
+
