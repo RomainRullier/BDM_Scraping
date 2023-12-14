@@ -6,7 +6,7 @@ import requests
 class TextProcessor():
     def __init__(self, key):
 
-        openai.api_key = self.api_key
+        openai.api_key = key
 
     def prompt(self, text):
 
@@ -50,7 +50,7 @@ class TextProcessor():
 
         return {
             'type': 'text',
-            'content' : return_gpt['choices'][0]['message']['content']
+            'content' : return_gpt['choices'][0]['text']
         }
 
     def openai_text_sumary(self, msg):
@@ -83,7 +83,7 @@ class TextProcessor():
 
         return {
             'type': 'text',
-            'content' : return_gpt['choices'][0]['message']['content']
+            'content' : return_gpt['choices'][0]['text']
         }
 
     def openai_code(self, msg):
@@ -97,7 +97,7 @@ class TextProcessor():
 
         return {
             'type': 'code',
-            'content' : return_gpt['choices'][0]['message']['content']
+            'content' : return_gpt['choices'][0]['text']
         }
 
 
@@ -112,5 +112,5 @@ class TextProcessor():
 
         return {
             'type': 'image',
-            'content': response['data'][0]['url']
+            'content': return_gpt['data'][0]['url']
         }
