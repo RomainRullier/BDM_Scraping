@@ -89,15 +89,20 @@ class TextProcessor():
     def openai_code(self, msg):
 
         return_gpt = openai.Completion.create(
-            model="davinci-codex",
-            prompt=msg,
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system",
+                    "content": 'Ton ojectif est de vérifier la syntaxe d\'un code.'},
+                {"role": "user",
+                    "content": "Je veux vérifier le code suivant : %s" % msg},
+            ],
             temperature=0.3,
             max_tokens=100
         )
 
         return {
             'type': 'code',
-            'content' : return_gpt['choices'][0]['text']
+            'content' : return_gpt['choices'][0]['message']['content']
         }
 
 
