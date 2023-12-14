@@ -30,6 +30,15 @@ class TextProcessor():
             return self.openai_text_generator(
                 text.replace('/generate', '').strip()
             )
+        elif text.startswith('/actu'):
+            return self.openai_actu(
+                text.replace('/actu', '').strip()
+            )
+
+        elif text.startswith('/json'):
+            return self.openai_json(
+                text.replace('/json', '').strip()
+            )
 
         return {
             'type': 'text',
